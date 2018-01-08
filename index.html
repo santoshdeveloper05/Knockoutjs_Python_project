@@ -1,0 +1,107 @@
+<html>
+
+<head>
+
+    <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
+    <script type='text/javascript' src='scripts/knockout-3.4.2.js'></script>
+    <!-- <script type="text/javascript" src="scripts/bootstrap.min.js"></script> -->
+    <script type="text/javascript" src="scripts/knockout.mapping-latest.js"></script>
+    <link rel="stylesheet" href="styles/bootstrap.min.css" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <script type="text/javascript" src="scripts/featureRequest.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <span style="font-weight:bold;font-size:17px;">Feature Request App</span>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Feature Request</div>
+            <div class="panel-body">
+                <div class="loading" data-bind="visible:featureViewModel.showLoader">Loading</div>
+                <div>
+                    
+                    <div class="form-inline">
+                        <div style="margin-bottom:5px;">
+                            <button type="button" class="btn btn-link" style="font-weight:bold; margin-left:-13px;"
+                                    data-bind="click: featureViewModel.navigateToCreateRequest">
+                                Create Feature Request
+                            </button>
+
+                            <div style="float:right">
+                                <label>Search:</label>
+                                <input type="text" class="form-control" data-bind="value:featureViewModel.searchField,valueUpdate: 'afterkeydown',event: {keyup: featureViewModel.searchFeatures}" />
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-hover table-bordered">
+                        <!--Table head-->
+                        <thead>
+                            <tr style="background-color:#337ab7;color:white;">
+                                <th>Title </th>
+                                <th class="col-md-3">Description</th>
+                                <th>Client</th>
+                                <th>Client Priority</th>
+                                <th>Target Date</th>
+                                <th>Product Area</th>
+                                <th class="col-md-1"></th>
+                            </tr>
+                        </thead>
+                        <!--Table head-->
+                        <!--Table body-->
+                        <tbody data-bind="foreach: featureViewModel.features">
+                            <tr>
+                                <td data-bind="text: title"></td>
+                                <td class="col-md-3" data-bind="text: description"></td>
+                                <td data-bind="text: client"></td>
+                                <td data-bind="text: clientPriority"></td>
+                                <td data-bind="text: targetDate"></td>
+                                <td data-bind="text: productArea"></td>
+                                <td class="btn-link col-md-1">
+                                    <button type="button" class="btn btn-link" style="font-weight:bold;" data-bind="click:$parent.featureViewModel.navigateToEdit">Edit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!--Table body-->
+                    </table>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="email">Page Size:</label>
+                            <select data-bind="options:featureViewModel.pageSize,value:featureViewModel.selectedPageSize,optionsText:function(item){return item;},event: { change: featureViewModel.pageSizeChange }"
+                                    class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script type="text/javascript">
+
+    var featureViewModel = new featureRequestViewModel();
+    //ko.applyBindings(featureViewModel);
+    ko.applyBindings({ featureViewModel });
+    featureViewModel.getPriorities();
+    featureViewModel.getProductAreas();
+    featureViewModel.getClients();
+    $(document).ready(function () {
+
+        featureViewModel.getFeatures();
+
+        //getUsers();
+        //function getUsers() {
+        //    $.getJSON("https://reqres.in/api/users", function (data) {
+        //        console.log(data.data);
+        //        var observableData = ko.mapping.fromJS(data.data);
+        //        var userArray = observableData();
+        //        userModel.users(userArray);
+        //        console.log(userModel.users);
+        //    })
+        //}
+    })
+
+</script>

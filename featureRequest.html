@@ -1,0 +1,92 @@
+<html>
+<head>
+    <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
+    <script type='text/javascript' src='scripts/knockout-3.4.2.js'></script>
+    <!-- <script type="text/javascript" src="scripts/bootstrap.min.js"></script> -->
+    <script type="text/javascript" src="scripts/knockout.mapping-latest.js"></script>
+    <link rel="stylesheet" href="styles/bootstrap.min.css"/>
+    <link rel="stylesheet" href="styles/styles.css"/>
+    <script type="text/javascript" src="scripts/featureRequest.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <span style="font-weight:bold;font-size:17px;">Feature Request App</span>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Create Feature Request</div>
+            <div class="panel-body">
+                <div class="loading" data-bind="visible:showLoader">Loading</div>
+                <form data-bind="submit:addFeature" style="width:70%">
+                    <div class="form-group">
+                        <label for="email">Title:</label>
+                        <input type="text" class="form-control" data-bind="value:featureModel.title" required
+                        maxlength="100"
+                        oninvalid="this.setCustomValidity('Enter Title')"
+                        oninput="setCustomValidity('')" />
+
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Description:</label>
+                        <textarea name="name" rows="2" cols="80" class="form-control"
+                        maxlength="1000"
+                        oninvalid="this.setCustomValidity('Enter Description ')"
+                        oninput="setCustomValidity('')"
+                        required data-bind="value:featureModel.description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="client"> Client:</label>
+                        <!-- <input type="text" class="form-control"
+                        maxlength="100"
+                        oninvalid="this.setCustomValidity('Enter Client ')"
+                        oninput="setCustomValidity('')"
+                        data-bind="value:featureModel.client" required/> -->
+                        <select required data-bind="options:featureModel.clients,value:featureModel.client,optionsText:function(item){return item.name;},optionsCaption: '-Select-'" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="client"> Client Priority:</label>
+                        <!--<input type="number" class="form-control"                    
+                        oninvalid="this.setCustomValidity('Enter Client Priority ')"
+                        oninput="setCustomValidity('')" required
+                        data-bind="value:featureModel.relationships.client_priority.id"  />-->
+                        <select required data-bind="options:featureModel.priorities,value:featureModel.clientPriority,optionsText:function(item){return item.priority;},optionsCaption: '-Select-'" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Target Date:</label>
+                        <input type="date" class="form-control"
+                        maxlength="100"
+                        oninvalid="this.setCustomValidity('Enter Target Date')"
+                        oninput="setCustomValidity('')"
+                        data-bind="value:featureModel.targetDate,dateFormat: 'MMMM Do YYYY'" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="client"> Product Area:</label>
+                        <!-- <input type="text" class="form-control"
+                        maxlength="100"
+                        oninvalid="this.setCustomValidity('Enter Product Area ')"
+                        oninput="setCustomValidity('')"
+                        data-bind="value:featureModel.product_area" required/> -->
+                        <select required data-bind="options:featureModel.productAreas,value:featureModel.productArea,optionsText:function(item){return item.product_Area;},optionsCaption: '-Select-'" class="form-control"></select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-warning"
+                    data-bind="click:featureViewModel.cancel">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    var featureViewModel = new featureRequestViewModel();
+    ko.applyBindings(featureViewModel);
+    var qs = featureViewModel.getQueryStrings();
+    var id = qs["id"];
+    featureViewModel.getPriorities();
+    featureViewModel.getProductAreas();
+    featureViewModel.getClients();
+    if(id !==undefined ){        
+        featureViewModel.getFeatureById(id);
+    }
+</script>
