@@ -22,5 +22,5 @@ Product Area: A selection list of product areas (use 'Policies', 'Billing', 'Cla
 The following are requirements on the tech stack.
 
 OS: Ubuntu
-JavaScript: KnockoutJS
+JavaScript: KnockoutJS ||  
 Server Side Scripting: Python 3.5+
